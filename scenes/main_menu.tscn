@@ -6,6 +6,15 @@
 
 [node name="background" type="Node3D" parent="."]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="background"]
+[node name="table" type="MeshInstance3D" parent="background"]
 transform = Transform3D(100, 0, 0, 0, 1, 0, 0, 0, 100, 0, 0, 0)
 mesh = SubResource("BoxMesh_vue75")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 14.1622, 24.5815)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.138499, 0.990363, 0, -0.990363, -0.138499, 0, 20.4703, 0)
+light_energy = 0.4
