@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://cnild1gn8bgwl"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_vue75"]
+
+[node name="main_menu" type="Node3D"]
+
+[node name="background" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="background"]
+transform = Transform3D(100, 0, 0, 0, 1, 0, 0, 0, 100, 0, 0, 0)
+mesh = SubResource("BoxMesh_vue75")
