@@ -16,7 +16,7 @@ background_mode = 2
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.25078, 0, 0.280377)
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(-0.00143123, 0, -0.999999, 0, 1, 0, 0.999999, 0, -0.00143123, -101.598, 125.542, 2.6086)
+transform = Transform3D(-0.00123684, 0.503186, -0.864177, 0.000720175, 0.864178, 0.503185, 0.999999, -1.74623e-10, -0.00143123, -54.8186, 113.083, 2.6086)
 
 [node name="SpotLight3D" type="SpotLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1.19249e-08, 1, 0, -1, 1.19249e-08, 0, 184.118, 0)
@@ -30,4 +30,10 @@ camera_attributes = SubResource("CameraAttributesPractical_w7c3h")
 compositor = SubResource("Compositor_w8frs")
 
 [node name="Card" parent="." instance=ExtResource("2_w7c3h")]
-transform = Transform3D(0.128221, -0.925349, 0.356776, -0.0455717, 0.353868, 0.934184, -0.990698, -0.136041, 0.00320361, -26.6424, 92.186, 2.81423)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -34.7604, 82.5977, 2.81423)
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="."]
+transform = Transform3D(0.128221, -0.356776, -0.925349, -0.0455717, -0.934184, 0.353868, -0.990698, -0.00320362, -0.136041, -106.798, 137.051, 2.20461)
+spot_range = 56.56
+spot_attenuation = -0.1
+spot_angle = 58.71
