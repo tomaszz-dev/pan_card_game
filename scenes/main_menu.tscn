@@ -1,20 +1,101 @@
-[gd_scene load_steps=2 format=3 uid="uid://cnild1gn8bgwl"]
+[gd_scene load_steps=14 format=3 uid="uid://cnild1gn8bgwl"]
+
+[ext_resource type="Texture2D" uid="uid://i5scu34k5xab" path="res://assets/textures/cards/card_hearts_09.png" id="1_ekxnf"]
+[ext_resource type="Texture2D" uid="uid://cfqjct313qv2j" path="res://assets/textures/cards/card_back.png" id="2_bqqt6"]
+[ext_resource type="Script" uid="uid://cy35m0hxm00wo" path="res://scripts/karta_glowna.gd" id="2_wu84c"]
+[ext_resource type="Script" uid="uid://cy2ktbxhsc8sk" path="res://scripts/menu.gd" id="4_wu84c"]
+[ext_resource type="Texture2D" uid="uid://bt15qtbncl53k" path="res://assets/textures/logo.png" id="5_8ln24"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_vue75"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wu84c"]
+albedo_texture = ExtResource("1_ekxnf")
+uv1_scale = Vector3(0.625, 0.905, 1)
+uv1_offset = Vector3(0.19, 0.05, 0)
+texture_filter = 0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_8ln24"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rtw2f"]
+albedo_texture = ExtResource("2_bqqt6")
+uv1_scale = Vector3(0.625, 0.905, 1)
+uv1_offset = Vector3(0.19, 0.05, 0)
+texture_filter = 0
+
+[sub_resource type="Sky" id="Sky_bqqt6"]
+
+[sub_resource type="Environment" id="Environment_bqqt6"]
+background_mode = 2
+background_color = Color(0.262851, 0.764047, 0.991883, 1)
+sky = SubResource("Sky_bqqt6")
+ambient_light_source = 3
+ambient_light_color = Color(0.502817, 0.663302, 1, 1)
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_bqqt6"]
+
+[sub_resource type="Compositor" id="Compositor_wu84c"]
 
 [node name="main_menu" type="Node3D"]
 
 [node name="background" type="Node3D" parent="."]
 
-[node name="table" type="MeshInstance3D" parent="background"]
+[node name="flat" type="MeshInstance3D" parent="background"]
 transform = Transform3D(100, 0, 0, 0, 1, 0, 0, 0, 100, 0, 0, 0)
 mesh = SubResource("BoxMesh_vue75")
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 14.1622, 24.5815)
+[node name="karta_glowna" type="MeshInstance3D" parent="background"]
+transform = Transform3D(-3.99246, 0.0605571, -0.0593457, -0.042436, -0.0115466, 5.99927, 0.241745, 0.998097, 0.0730035, 0.146299, 7.58244, 0)
+material_override = SubResource("StandardMaterial3D_wu84c")
+mesh = SubResource("PlaneMesh_8ln24")
+script = ExtResource("2_wu84c")
+
+[node name="karta_glowna2" type="MeshInstance3D" parent="background/karta_glowna"]
+transform = Transform3D(-0.999848, 0.0043631, 0, -0.0698096, -0.999848, 0, 0, 0, 1, 0, -0.138519, 0)
+material_override = SubResource("StandardMaterial3D_rtw2f")
+mesh = SubResource("PlaneMesh_8ln24")
+skeleton = NodePath("../..")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_bqqt6")
+camera_attributes = SubResource("CameraAttributesPractical_bqqt6")
+compositor = SubResource("Compositor_wu84c")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -0.138499, 0.990363, 0, -0.990363, -0.138499, 0, 20.4703, 0)
-light_energy = 0.4
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.2785, 7.73974, 24.5815)
+visible = false
+
+[node name="SpotLight3D" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.276912, 0.960895, 0, -0.960895, 0.276912, -0.535897, 29.4509, 7.29604)
+light_energy = 8.435
+spot_range = 37.557
+spot_angle = 22.04
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchors_preset = -1
+anchor_left = 0.0147569
+anchor_top = 0.322531
+anchor_right = 0.304687
+anchor_bottom = 0.609568
+offset_bottom = 3.05176e-05
+size_flags_vertical = 8
+script = ExtResource("4_wu84c")
+metadata/_edit_use_anchors_ = true
+
+[node name="NewGameButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 60
+text = "nowe gre"
+
+[node name="LeaveGameButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 60
+text = "wyjdz"
+
+[node name="Logo" type="Sprite2D" parent="VBoxContainer"]
+position = Vector2(105, -100)
+texture = ExtResource("5_8ln24")
+
+[connection signal="pressed" from="VBoxContainer/NewGameButton" to="VBoxContainer" method="_on_new_game_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/LeaveGameButton" to="VBoxContainer" method="_on_leave_game_button_pressed"]
