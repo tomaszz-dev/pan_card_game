@@ -15,7 +15,7 @@ background_mode = 2
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.25078, 0, 0.280377)
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(-0.00143123, 0, -0.999999, 0, 1, 0, 0.999999, 0, -0.00143123, -101.818, 125.051, 0.766693)
+transform = Transform3D(-0.00143123, 0, -0.999999, 0, 1, 0, 0.999999, 0, -0.00143123, -101.598, 125.542, 2.6086)
 
 [node name="SpotLight3D" type="SpotLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1.19249e-08, 1, 0, -1, 1.19249e-08, 0, 148.562, 0)
