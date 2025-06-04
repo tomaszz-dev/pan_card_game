@@ -42,7 +42,7 @@ camera_attributes = SubResource("CameraAttributesPractical_w7c3h")
 compositor = SubResource("Compositor_w8frs")
 
 [node name="Card" parent="." instance=ExtResource("2_dtmi3")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -13.3186, 82.5977, -56.782)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -5.484, 82.3, -56.782)
 script = SubResource("GDScript_dtmi3")
 
 [node name="SpotLight3D2" type="SpotLight3D" parent="."]
@@ -55,4 +55,6 @@ spot_angle = 58.71
 transform = Transform3D(0.999897, 0, 0.0143461, 0, 1, 0, -0.0143461, 0, 0.999897, -1.79369, 82.5977, 2.81423)
 
 [node name="Card3" parent="." instance=ExtResource("2_dtmi3")]
-transform = Transform3D(0.00915777, 0.987397, 0.157995, -0.0206798, 0.158155, -0.987198, -0.999744, 0.00577322, 0.0218675, 42.3939, 92.8386, 2.81423)
+transform = Transform3D(4.37114e-08, -3.59958e-15, 1, -0.141161, -0.989987, 6.17032e-09, 0.989987, -0.141161, -4.32737e-08, 14.0899, 83.2, -3.377)
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
