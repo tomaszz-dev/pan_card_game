@@ -3,6 +3,9 @@ extends Node3D
 
 enum Suit { CLUBS, DIAMONDS, HEARTS, SPADES }
 
+var card_id: int = -1 
+var is_selected: bool = false
+
 var card_textures = [
 "res://assets/textures/cards/card_clubs_02.png",
 "res://assets/textures/cards/card_clubs_03.png",
@@ -58,7 +61,14 @@ var card_textures = [
 "res://assets/textures/cards/card_spades_Q.png",
 ]
 
-	
+func _on_area_3d_input_event(camera, event, event_position, normal, shape_idx):
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		if get_parent().has_method("card_was_clicked"):
+			get_parent().card_was_clicked(self)
+
+
+
+
 
 var suit_offsets = {
 	Suit.CLUBS: 0,

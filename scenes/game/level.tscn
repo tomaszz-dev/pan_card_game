@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://1kjecdw7o7ta"]
+[gd_scene load_steps=7 format=3 uid="uid://1kjecdw7o7ta"]
 
 [ext_resource type="Script" uid="uid://sibkjv78vte" path="res://scenes/game/level.gd" id="1_dtmi3"]
 [ext_resource type="PackedScene" uid="uid://dsvwg4y4er638" path="res://assets/models/table.glb" id="1_khnyk"]
@@ -10,16 +10,6 @@ background_mode = 2
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_w7c3h"]
 
 [sub_resource type="Compositor" id="Compositor_w8frs"]
-
-[sub_resource type="GDScript" id="GDScript_dtmi3"]
-script/source = "extends Node3D
-
-func _ready():
-	var card_scene = preload(\"res://scenes/objects/card.tscn\")
-	var card = card_scene.instantiate()
-	add_child(card)
-	card.set_card_by_value(card.Suit.HEARTS, 9)  # 9 kier
-"
 
 [node name="Level" type="Node3D"]
 script = ExtResource("1_dtmi3")
@@ -41,20 +31,13 @@ environment = SubResource("Environment_2q6dc")
 camera_attributes = SubResource("CameraAttributesPractical_w7c3h")
 compositor = SubResource("Compositor_w8frs")
 
-[node name="Card" parent="." instance=ExtResource("2_dtmi3")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -5.484, 82.3, -56.782)
-script = SubResource("GDScript_dtmi3")
-
 [node name="SpotLight3D2" type="SpotLight3D" parent="."]
 transform = Transform3D(0.128221, -0.356776, -0.925349, -0.0455717, -0.934184, 0.353868, -0.990698, -0.00320362, -0.136041, -106.798, 137.051, 2.20461)
 spot_range = 56.56
 spot_attenuation = -0.1
 spot_angle = 58.71
 
-[node name="Card2" parent="." instance=ExtResource("2_dtmi3")]
-transform = Transform3D(0.999897, 0, 0.0143461, 0, 1, 0, -0.0143461, 0, 0.999897, -1.79369, 82.5977, 2.81423)
-
-[node name="Card3" parent="." instance=ExtResource("2_dtmi3")]
-transform = Transform3D(4.37114e-08, -3.59958e-15, 1, -0.141161, -0.989987, 6.17032e-09, 0.989987, -0.141161, -4.32737e-08, 14.0899, 83.2, -3.377)
+[node name="stos" parent="." instance=ExtResource("2_dtmi3")]
+transform = Transform3D(0.999897, 0, 0.0143461, 0, 1, 0, -0.0143461, 0, 0.999897, 1.965, 82.423, 3.269)
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]

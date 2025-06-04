@@ -10,7 +10,7 @@ var gracz2 = []
 var przesuniecie_x
 var przesuniecie_y
 var przesuniecie_z
-
+var card_id: int = -1
 
 	
 func _ready():
@@ -52,10 +52,10 @@ func losowanie():
 	print(gracz1,gracz2)
 
 
+
 func karta(x,y,z,card_id,rotacja):
 		# Tworzymy instancję karty
 	var card = CardScene.instantiate()
-	
 	# Ustawiamy jej pozycję w świecie (opcjonalnie)
 	card.transform.origin = Vector3(x, y, z)
 	card.rotation = Vector3(0, deg_to_rad(90), deg_to_rad(rotacja))
@@ -63,8 +63,24 @@ func karta(x,y,z,card_id,rotacja):
 	add_child(card)
 	# Ustawiamy jej wartość (np. 9 kier)
 	card.set_card(card_id)
+	card.card_id = card_id  
+
+
 
 func dzwiek():
 	add_child(player)
 	player.stream = sound
 	player.play()
+
+func card_was_clicked(card_node: Node3D):
+	var pos = card_node.global_transform.origin
+	print(gracz1)
+	if card_node in gracz1:
+		if not card_node.is_selected:
+			pos.y += 2  # podnieś
+			card_node.is_selected = true
+		else:
+			pos.y -= 2  # opuść
+			card_node.is_selected = false
+	print(card_node.card_id)
+	card_node.global_transform.origin = pos
