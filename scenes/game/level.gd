@@ -100,7 +100,9 @@ func karta(x,y,z,card_id,rotacja):
 	card.card_id = card_id  
 
 #stos
-
+func ID_na_moc(x: int) -> int:
+	return int(x / 4) + 1
+	
 func dzwiek():
 	add_child(player)
 	player.stream = sound
@@ -109,16 +111,15 @@ func dzwiek():
 func left_card_was_clicked(card_node: Node3D):
 	if TWOJA_KOLEJ != 1:
 		return
-	
 	# Kliknięta karta należy do gracza
 	if card_node.card_id in gracz1:
 		var pos = card_node.global_transform.origin
 		if not card_node.is_selected:
-			if up.is_empty():
+			if up.is_empty() or ID_na_moc(up[0]) == ID_na_moc(card_node.card_id):  #sprawdza czy ma to sama moc
 				pos.y += 2
 				card_node.is_selected = true
 				up.append(card_node.card_id)
-			elif not up.is_empty() and card_node.card_id not in up:
+			elif up:
 				pass
 				# Zaznacz kartę
 				
@@ -141,13 +142,15 @@ func left_card_was_clicked(card_node: Node3D):
 			kolej()
 		else:
 			# Zagraj wybrane karty na stos
-			for card_id in up:
-				gracz1.erase(card_id)
-				stos.append(card_id)
-			up.clear()
-			ustaw_karty()
-			TWOJA_KOLEJ = 0
-			kolej()
+			if len(up) == 1 or len(up) == 4: #tylko 1 albo 4 karty
+				if ID_na_moc(stos[len(stos)-1]) <= ID_na_moc(up[0]):
+					for card_id in up:
+						gracz1.erase(card_id)
+						stos.append(card_id)
+					up.clear()
+					ustaw_karty()
+					TWOJA_KOLEJ = 0
+					kolej()
 
 	print("Kliknięto kartę:", card_node.card_id)
 	print("Wybrane karty:", up)
