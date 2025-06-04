@@ -133,7 +133,7 @@ func left_card_was_clicked(card_node: Node3D):
 	
 	# Kliknięto kartę ze stosu (tylko górną)
 	elif card_node.card_id in stos and stos.back() == card_node.card_id:
-		if up.is_empty():
+		if up.is_empty() and len(stos) > 1:
 			# Podnieś górną kartę ze stosu do ręki
 			stos.erase(card_node.card_id)
 			gracz1.append(card_node.card_id)
@@ -174,15 +174,29 @@ func game_loop():
 func kolej():
 	if TWOJA_KOLEJ == 1:
 		show_message("Twoja kolej!")
-		
 	else:
 		show_message("Kolej przeciwnika.")
 		await get_tree().create_timer(1).timeout
+		var ostatni = stos.back()
+		var zagrano = false
 		for x in gracz2:
-			place_this_on_stack(x)
+			if ID_na_moc(x) >= ID_na_moc(ostatni):
+				place_this_on_stack(x)
+				TWOJA_KOLEJ = 1
+				zagrano = true
+				break
+
+		if not zagrano:
+			# Przeciwnik musi dobrać kartę ze stosu
+			stos.pop_back()
+			gracz2.append(ostatni)
 			TWOJA_KOLEJ = 1
-			kolej()
-			break
+		ustaw_karty()
+		kolej()
+	if gracz1.is_empty():
+		show_message("WYGRAŁEŚ!")
+	if gracz2.is_empty():
+		show_message("PRZEGRAŁEŚ!")
 
 func place_this_on_stack(x):
 	if x in gracz1:
@@ -191,6 +205,9 @@ func place_this_on_stack(x):
 		gracz2.erase(x)
 	stos.append(x)
 	ustaw_karty()
+
+
+
 
 func show_message(text: String):
 	var label = $CanvasLayer/Label
