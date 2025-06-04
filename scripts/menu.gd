@@ -1,6 +1,6 @@
 extends VBoxContainer
 
-const LEVEL = preload("res://scenes/level.tscn")
+const LEVEL = preload("res://scenes/game/level.tscn")
 
 
 func _on_leave_game_button_pressed():

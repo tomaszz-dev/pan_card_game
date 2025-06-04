@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://i5scu34k5xab" path="res://assets/textures/cards/card_hearts_09.png" id="1_ekxnf"]
 [ext_resource type="Texture2D" uid="uid://cfqjct313qv2j" path="res://assets/textures/cards/card_back.png" id="2_bqqt6"]
-[ext_resource type="Script" uid="uid://cy35m0hxm00wo" path="res://scripts/karta_glowna.gd" id="2_wu84c"]
+[ext_resource type="Script" uid="uid://cy35m0hxm00wo" path="res://scripts/karta_w_menu.gd" id="2_wu84c"]
 [ext_resource type="Script" uid="uid://cy2ktbxhsc8sk" path="res://scripts/menu.gd" id="4_wu84c"]
 [ext_resource type="Texture2D" uid="uid://bt15qtbncl53k" path="res://assets/textures/logo.png" id="5_8ln24"]
 
