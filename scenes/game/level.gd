@@ -113,12 +113,15 @@ func left_card_was_clicked(card_node: Node3D):
 	# Kliknięta karta należy do gracza
 	if card_node.card_id in gracz1:
 		var pos = card_node.global_transform.origin
-
 		if not card_node.is_selected:
-			# Zaznacz kartę
-			pos.y += 2
-			card_node.is_selected = true
-			up.append(card_node.card_id)
+			if up.is_empty():
+				pos.y += 2
+				card_node.is_selected = true
+				up.append(card_node.card_id)
+			elif not up.is_empty() and card_node.card_id not in up:
+				pass
+				# Zaznacz kartę
+				
 		else:
 			# Odznacz kartę
 			pos.y -= 2
@@ -163,6 +166,7 @@ func game_loop():
 	place_this_on_stack(30)
 	await get_tree().create_timer(1).timeout
 	kolej()
+	
 
 func kolej():
 	if TWOJA_KOLEJ == 1:
