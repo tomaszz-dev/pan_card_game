@@ -30,7 +30,6 @@ var card_textures = [
 "res://assets/textures/cards/card_diamonds_J.png",
 "res://assets/textures/cards/card_diamonds_K.png",
 "res://assets/textures/cards/card_diamonds_Q.png",
-"res://assets/textures/cards/card_empty.png",
 "res://assets/textures/cards/card_hearts_02.png",
 "res://assets/textures/cards/card_hearts_03.png",
 "res://assets/textures/cards/card_hearts_04.png",
