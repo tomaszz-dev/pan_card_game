@@ -135,14 +135,16 @@ func left_card_was_clicked(card_node: Node3D):
 	elif card_node.card_id in stos and stos.back() == card_node.card_id:
 		if up.is_empty() and len(stos) > 1:
 			# Podnieś górną kartę ze stosu do ręki
-			stos.erase(card_node.card_id)
-			gracz1.append(card_node.card_id)
+			usun_i_zachowaj_ostatnie(stos)
+			var usuniete = usun_i_zachowaj_ostatnie(lista)
+			for element in usuniete:
+				gracz1.append(element)
 			ustaw_karty()
 			TWOJA_KOLEJ = 0
 			kolej()
 		else:
 			# Zagraj wybrane karty na stos
-			if len(up) == 1 or len(up) == 4: #tylko 1 albo 4 karty
+			if len(up) == 1 or len(up) == 4 or up == [33,33,33]: #tylko 1 albo 4 karty albo 3  dziewątki serca
 				if ID_na_moc(stos[len(stos)-1]) <= ID_na_moc(up[0]):
 					for card_id in up:
 						gracz1.erase(card_id)
@@ -163,22 +165,27 @@ func game_loop():
 		show_message("Kolej przeciwnika")
 		TWOJA_KOLEJ = 0
 	elif 33 in gracz2:
-		show_message("Twoja kolej!",)
+		show_message("Twoja kolej!")
 		TWOJA_KOLEJ = 1
-		kolej()
+	
 	place_this_on_stack(30)
 	await get_tree().create_timer(1).timeout
 	kolej()
-	
 
 func kolej():
 	if TWOJA_KOLEJ == 1:
 		show_message("Twoja kolej!")
 	else:
 		show_message("Kolej przeciwnika.")
-		await get_tree().create_timer(1).timeout
+		await get_tree().create_timer(0.1).timeout
+
+		if stos.is_empty():
+			show_message("Błąd: stos jest pusty.")
+			return
+
 		var ostatni = stos.back()
 		var zagrano = false
+
 		for x in gracz2:
 			if ID_na_moc(x) >= ID_na_moc(ostatni):
 				place_this_on_stack(x)
@@ -187,25 +194,47 @@ func kolej():
 				break
 
 		if not zagrano:
-			# Przeciwnik musi dobrać kartę ze stosu
-			stos.pop_back()
-			gracz2.append(ostatni)
-			TWOJA_KOLEJ = 1
+			# Zabezpieczenie: AI nie dobiera, jeśli stos ma tylko 1 kartę
+			if stos.size() <= 1:
+				show_message("Przeciwnik nie może dobrać – tylko jedna karta na stosie.")
+				TWOJA_KOLEJ = 1
+			else:
+				# Przeciwnik musi dobrać kartę ze stosu
+				usun_i_zachowaj_ostatnie(stos)
+				var usuniete = usun_i_zachowaj_ostatnie(lista)
+				for element in usuniete:
+					gracz2.append(element)
+				TWOJA_KOLEJ = 1
+
 		ustaw_karty()
-		kolej()
+
 	if gracz1.is_empty():
 		show_message("WYGRAŁEŚ!")
 	if gracz2.is_empty():
 		show_message("PRZEGRAŁEŚ!")
 
+
 func place_this_on_stack(x):
 	if x in gracz1:
 		gracz1.erase(x)
-	else:
+	elif x in gracz2:
 		gracz2.erase(x)
+	else:
+		print("Błąd: karta nie należy do żadnego gracza.")
 	stos.append(x)
 	ustaw_karty()
 
+func usun_i_zachowaj_ostatnie(lista: Array) -> Array:
+	if lista.size() <= 1:
+		return []  # nie usuwamy, jeśli tylko jedna karta została
+
+	var ile_do_usuniecia = min(3, lista.size() - 1)
+	var usuniete = []
+
+	for i in range(ile_do_usuniecia):
+		usuniete.insert(0, lista.pop_back())  # dodajemy od przodu, by zachować kolejność
+
+	return usuniete
 
 
 
