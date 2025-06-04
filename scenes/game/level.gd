@@ -142,7 +142,7 @@ func left_card_was_clicked(card_node: Node3D):
 			kolej()
 		else:
 			# Zagraj wybrane karty na stos
-			if len(up) == 1 or len(up) == 4: #tylko 1 albo 4 karty
+			if len(up) == 1 or len(up) == 4 or up == [33,33,33]: #tylko 1 albo 4 karty albo 3 dziewiatki serce
 				if ID_na_moc(stos[len(stos)-1]) <= ID_na_moc(up[0]):
 					for card_id in up:
 						gracz1.erase(card_id)
