@@ -19,6 +19,7 @@ var TWOJA_KOLEJ = 1
 	
 func _ready():
 	losowanie()
+	dzwiek()
 	przesuniecie_x = -30
 	przesuniecie_z = -60
 	przesuniecie_y = 82.3
@@ -106,48 +107,75 @@ func dzwiek():
 	player.play()
 
 func left_card_was_clicked(card_node: Node3D):
-	var pos = card_node.global_transform.origin
-	print(gracz1)
+	if TWOJA_KOLEJ != 1:
+		return
+	
+	# Kliknięta karta należy do gracza
+	if card_node.card_id in gracz1:
+		var pos = card_node.global_transform.origin
 
-	if card_node.card_id in gracz1: #gracz ma karte
-		if not card_node.is_selected: #karta jest opuszczona
-			pos.y += 2  # podnieś
+		if not card_node.is_selected:
+			# Zaznacz kartę
+			pos.y += 2
 			card_node.is_selected = true
 			up.append(card_node.card_id)
-		else: #karta jest podniesiona
-			pos.y -= 2  # opuść
+		else:
+			# Odznacz kartę
+			pos.y -= 2
 			card_node.is_selected = false
 			up.erase(card_node.card_id)
-	elif card_node.card_id in stos and card_node.card_id == stos[len(stos)-1]: #gracz nie ma karty
-		if len(stos) > 1: #stos jest pusty/ma jedną karte
+
+		card_node.global_transform.origin = pos
+	
+	# Kliknięto kartę ze stosu (tylko górną)
+	elif card_node.card_id in stos and stos.back() == card_node.card_id:
+		if up.is_empty():
+			# Podnieś górną kartę ze stosu do ręki
 			stos.erase(card_node.card_id)
 			gracz1.append(card_node.card_id)
 			ustaw_karty()
-		else: #stos ma kartę na sobie
-			var kopia_up = up.duplicate()
-			for i in kopia_up:
-				gracz1.erase(i)
-				stos.append(i)
+			TWOJA_KOLEJ = 0
+			kolej()
+		else:
+			# Zagraj wybrane karty na stos
+			for card_id in up:
+				gracz1.erase(card_id)
+				stos.append(card_id)
 			up.clear()
 			ustaw_karty()
+			TWOJA_KOLEJ = 0
+			kolej()
 
-	print(card_node.card_id)
-	card_node.global_transform.origin = pos
-	print(up)
+	print("Kliknięto kartę:", card_node.card_id)
+	print("Wybrane karty:", up)
 
 
 
 func game_loop():
 	show_message("Zaczyna gracz posiadający kartę 9 serce!")
 	if 33 in gracz1:
-		show_message("Kolej przeciwnika",10)
-		TWOJA_KOLEJ = 1
-	elif 33 in gracz2:
-		show_message("Twoja kolej!",10)
+		show_message("Kolej przeciwnika")
 		TWOJA_KOLEJ = 0
-	place_this_on_stack(33)
-	
+	elif 33 in gracz2:
+		show_message("Twoja kolej!",)
+		TWOJA_KOLEJ = 1
+		kolej()
+	place_this_on_stack(30)
+	await get_tree().create_timer(1).timeout
+	kolej()
 
+func kolej():
+	if TWOJA_KOLEJ == 1:
+		show_message("Twoja kolej!")
+		
+	else:
+		show_message("Kolej przeciwnika.")
+		await get_tree().create_timer(1).timeout
+		for x in gracz2:
+			place_this_on_stack(x)
+			TWOJA_KOLEJ = 1
+			kolej()
+			break
 
 func place_this_on_stack(x):
 	if x in gracz1:
@@ -157,12 +185,12 @@ func place_this_on_stack(x):
 	stos.append(x)
 	ustaw_karty()
 
-func show_message(text: String, duration: float = 10.0):
+func show_message(text: String):
 	var label = $CanvasLayer/Label
+	label.visible = false
 	label.text = text
 	label.visible = true
-	await get_tree().create_timer(duration).timeout
-	label.visible = false
+	
 
 		
 func usun_karty_gracza1():
