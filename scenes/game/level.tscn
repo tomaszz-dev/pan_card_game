@@ -1,5 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://1kjecdw7o7ta"]
+[gd_scene load_steps=7 format=3 uid="uid://1kjecdw7o7ta"]
 
+[ext_resource type="Script" uid="uid://sibkjv78vte" path="res://scenes/game/level.gd" id="1_dtmi3"]
 [ext_resource type="PackedScene" uid="uid://dsvwg4y4er638" path="res://assets/models/table.glb" id="1_khnyk"]
 [ext_resource type="PackedScene" uid="uid://dstiijyn8bb30" path="res://scenes/objects/card.tscn" id="2_dtmi3"]
 
@@ -11,6 +12,7 @@ background_mode = 2
 [sub_resource type="Compositor" id="Compositor_w8frs"]
 
 [node name="Level" type="Node3D"]
+script = ExtResource("1_dtmi3")
 
 [node name="Sketchfab_Scene" parent="." instance=ExtResource("1_khnyk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.25078, 0, 0.280377)
@@ -37,3 +39,9 @@ transform = Transform3D(0.128221, -0.356776, -0.925349, -0.0455717, -0.934184, 0
 spot_range = 56.56
 spot_attenuation = -0.1
 spot_angle = 58.71
+
+[node name="Card2" parent="." instance=ExtResource("2_dtmi3")]
+transform = Transform3D(0.999897, 0, 0.0143461, 0, 1, 0, -0.0143461, 0, 0.999897, -1.79369, 82.5977, 2.81423)
+
+[node name="Card3" parent="." instance=ExtResource("2_dtmi3")]
+transform = Transform3D(0.00915777, 0.987397, 0.157995, -0.0206798, 0.158155, -0.987198, -0.999744, 0.00577322, 0.0218675, 42.3939, 92.8386, 2.81423)
