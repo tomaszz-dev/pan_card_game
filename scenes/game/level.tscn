@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://1kjecdw7o7ta"]
+[gd_scene load_steps=8 format=3 uid="uid://1kjecdw7o7ta"]
 
 [ext_resource type="Script" uid="uid://sibkjv78vte" path="res://scenes/game/level.gd" id="1_dtmi3"]
 [ext_resource type="PackedScene" uid="uid://dsvwg4y4er638" path="res://assets/models/table.glb" id="1_khnyk"]
 [ext_resource type="PackedScene" uid="uid://dstiijyn8bb30" path="res://scenes/objects/card.tscn" id="2_dtmi3"]
+[ext_resource type="Script" uid="uid://cksa4adtuik60" path="res://scenes/objects/card_stacks.gd" id="4_rhpan"]
 
 [sub_resource type="Environment" id="Environment_2q6dc"]
 background_mode = 2
@@ -33,6 +34,7 @@ compositor = SubResource("Compositor_w8frs")
 
 [node name="Card" parent="." instance=ExtResource("2_dtmi3")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -34.7604, 82.5977, 2.81423)
+script = ExtResource("4_rhpan")
 
 [node name="SpotLight3D2" type="SpotLight3D" parent="."]
 transform = Transform3D(0.128221, -0.356776, -0.925349, -0.0455717, -0.934184, 0.353868, -0.990698, -0.00320362, -0.136041, -106.798, 137.051, 2.20461)

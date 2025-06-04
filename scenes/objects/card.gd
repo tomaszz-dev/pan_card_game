@@ -1,5 +1,8 @@
 extends Node3D
 
+
+enum Suit { CLUBS, DIAMONDS, HEARTS, SPADES }
+
 var card_textures = [
 "res://assets/textures/cards/card_clubs_02.png",
 "res://assets/textures/cards/card_clubs_03.png",
@@ -57,18 +60,39 @@ var card_textures = [
 ]
 
 	
-func _ready():
-	var texture = load(card_textures[2])  # poprawna ścieżka do PNG
 
-	# Stwórz materiał
-	var material := StandardMaterial3D.new()
-	material.albedo_texture = texture
-	material.roughness = 1.0  # żeby nie odbijało światła jak lustro
-	material.metallic = 0.0
-	
-	# Ustaw materiał na powierzchnię 0
+var suit_offsets = {
+	Suit.CLUBS: 0,
+	Suit.DIAMONDS: 13,
+	Suit.HEARTS: 27,
+	Suit.SPADES: 40,
+}
+
+func set_card(index: int) -> void:
+	if index < 0 or index >= card_textures.size():
+		push_error("Niepoprawny indeks karty: %s" % index)
+		return
+
+	var texture = load(card_textures[index])
 	var mesh_instance = $przod
-	mesh_instance.set_surface_override_material(0, material)
-	
+
+	var material = mesh_instance.get_active_material(0)
+	if material == null:
+		material = StandardMaterial3D.new()
+		mesh_instance.set_surface_override_material(0, material)
+
+	material.albedo_texture = texture
+	material.roughness = 1.0
+	material.metallic = 0.0
 	material.uv1_scale = Vector3(0.6, 0.9, 1.0)
 	material.uv1_offset = Vector3(0.2, 0.05, 0.0)
+
+func set_card_by_value(suit: Suit, value: int) -> void:
+	# 2–10, 11=J, 12=Q, 13=K, 14=A
+	if value < 2 or value > 14:
+		push_error("Niepoprawna wartość karty: %s" % value)
+		return
+
+	var offset = suit_offsets[suit]
+	var index = offset + (value - 2)
+	set_card(index)
