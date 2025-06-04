@@ -21,7 +21,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.25078, 0, 0.280377)
 transform = Transform3D(-0.00123684, 0.503186, -0.864177, 0.000720175, 0.864178, 0.503186, 0.999999, 1.22236e-09, -0.00143123, -67.2994, 132.487, 2.6086)
 
 [node name="SpotLight3D" type="SpotLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1.19249e-08, 1, 0, -1, 1.19249e-08, 0, 184.118, 0)
+transform = Transform3D(0.866095, -5.96101e-09, -0.499879, 0.499879, 1.03281e-08, 0.866095, 0, -1, 1.19249e-08, -58.6583, 184.118, 0)
 spot_range = 4096.0
 spot_attenuation = 0.0
 spot_angle = 62.85
@@ -38,6 +38,6 @@ spot_attenuation = -0.1
 spot_angle = 58.71
 
 [node name="stos" parent="." instance=ExtResource("2_dtmi3")]
-transform = Transform3D(0.999897, 0, 0.0143461, 0, 1, 0, -0.0143461, 0, 0.999897, 1.965, 82.423, 3.269)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2, 82.4, 3)
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]

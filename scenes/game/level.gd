@@ -11,12 +11,13 @@ var przesuniecie_x
 var przesuniecie_y
 var przesuniecie_z
 var card_id: int = -1
+var stos = []
+var stos_y = 82.4
+var up = []
 
 	
 func _ready():
 	losowanie()
-	dzwiek()
-	#gracz1
 	przesuniecie_x = -30
 	przesuniecie_z = -60
 	przesuniecie_y = 82.3
@@ -25,7 +26,6 @@ func _ready():
 		przesuniecie_z = przesuniecie_z+5
 		przesuniecie_y = przesuniecie_y+0.01
 		await get_tree().create_timer(0.01).timeout
-
 	#gracz2
 	przesuniecie_x = 40
 	przesuniecie_z = -60
@@ -35,8 +35,35 @@ func _ready():
 		przesuniecie_z = przesuniecie_z+5
 		przesuniecie_y = przesuniecie_y+0.01
 		await get_tree().create_timer(0.01).timeout
+	
+func ustaw_karty():
+	for child in get_children():
+		if child is Node3D and child.has_method("set_card"):  # zakładamy że tylko karty mają set_card()
+			remove_child(child)
+			child.queue_free()
 
-
+	przesuniecie_x = -30
+	przesuniecie_z = -60
+	przesuniecie_y = 82.3
+	for i in gracz1:
+		karta(przesuniecie_x,przesuniecie_y,przesuniecie_z,i,0)
+		przesuniecie_z = przesuniecie_z+5
+		przesuniecie_y = przesuniecie_y+0.01
+	#gracz2
+	przesuniecie_x = 40
+	przesuniecie_z = -60
+	przesuniecie_y = 83
+	for i in gracz2:
+		karta(przesuniecie_x,przesuniecie_y,przesuniecie_z,i,180)
+		przesuniecie_z = przesuniecie_z+5
+		przesuniecie_y = przesuniecie_y+0.01
+	#stos
+	przesuniecie_x = 2.0
+	przesuniecie_z = 3.0
+	przesuniecie_y = 82.4
+	for i in stos:
+		karta(przesuniecie_x,przesuniecie_y,przesuniecie_z,i,0)
+		przesuniecie_y = przesuniecie_y+0.1
 
 
 func losowanie():
@@ -65,22 +92,48 @@ func karta(x,y,z,card_id,rotacja):
 	card.set_card(card_id)
 	card.card_id = card_id  
 
-
+#stos
 
 func dzwiek():
 	add_child(player)
 	player.stream = sound
 	player.play()
 
-func card_was_clicked(card_node: Node3D):
+func left_card_was_clicked(card_node: Node3D):
 	var pos = card_node.global_transform.origin
 	print(gracz1)
-	if card_node in gracz1:
+
+	if card_node.card_id in gracz1:
 		if not card_node.is_selected:
 			pos.y += 2  # podnieś
 			card_node.is_selected = true
+			up.append(card_node.card_id)
 		else:
 			pos.y -= 2  # opuść
 			card_node.is_selected = false
+			up.erase(card_node.card_id)
 	print(card_node.card_id)
 	card_node.global_transform.origin = pos
+	print(up)
+
+
+
+
+func _input(event):
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+			print("Kliknięto prawy przycisk myszy!")
+			right_click()
+
+func right_click():
+	for i in up:
+		gracz1.erase(i)
+		stos.append(i)
+		ustaw_karty()
+		up.erase(i)
+		
+func usun_karty_gracza1():
+	for child in get_children():
+		if child.has_variable("card_id") and child.card_id in gracz1:
+			remove_child(child)
+			child.queue_free()
