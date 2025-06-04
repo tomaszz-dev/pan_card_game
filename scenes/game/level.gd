@@ -133,15 +133,23 @@ func left_card_was_clicked(card_node: Node3D):
 
 
 func game_loop():
-	place_this_on_stack(4)
-	show_message("Karta została zagrana!")
+	show_message("Zaczyna gracz posiadający kartę 9 serce!")
+	if 33 in gracz1:
+		show_message("Kolej przeciwnika")
+	else:
+		show_message("Twoja kolej!",10)
+	place_this_on_stack(33)
+	
 
 func place_this_on_stack(x):
-	gracz1.erase(x)
+	if x in gracz1:
+		gracz1.erase(x)
+	else:
+		gracz2.erase(x)
 	stos.append(x)
 	ustaw_karty()
 
-func show_message(text: String, duration: float = 2.0):
+func show_message(text: String, duration: float = 10.0):
 	var label = $CanvasLayer/Label
 	label.text = text
 	label.visible = true
