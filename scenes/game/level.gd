@@ -14,6 +14,7 @@ var card_id: int = -1
 var stos = []
 var stos_y = 82.4
 var up = []
+var TWOJA_KOLEJ = 1
 
 	
 func _ready():
@@ -68,16 +69,20 @@ func ustaw_karty():
 	
 
 func losowanie():
-	for i in range(0,52):
+	lista.clear()
+	gracz1.clear()
+	gracz2.clear()
+
+	for i in range(52):
 		lista.append(i)
-		print(i)
 	lista.shuffle()
-	for i in lista:
+	
+	for i in range(lista.size()):
 		if i % 2 == 0:
-			gracz1.append(i)
+			gracz1.append(lista[i])
 		else:
-			gracz2.append(i)
-	print(gracz1,gracz2)
+			gracz2.append(lista[i])
+
 
 
 
@@ -104,21 +109,21 @@ func left_card_was_clicked(card_node: Node3D):
 	var pos = card_node.global_transform.origin
 	print(gracz1)
 
-	if card_node.card_id in gracz1:
-		if not card_node.is_selected:
+	if card_node.card_id in gracz1: #gracz ma karte
+		if not card_node.is_selected: #karta jest opuszczona
 			pos.y += 2  # podnieś
 			card_node.is_selected = true
 			up.append(card_node.card_id)
-		else:
+		else: #karta jest podniesiona
 			pos.y -= 2  # opuść
 			card_node.is_selected = false
 			up.erase(card_node.card_id)
-	elif card_node.card_id in stos and card_node.card_id == stos[len(stos)-1]:
-		if up.is_empty():
+	elif card_node.card_id in stos and card_node.card_id == stos[len(stos)-1]: #gracz nie ma karty
+		if len(stos) > 1: #stos jest pusty/ma jedną karte
 			stos.erase(card_node.card_id)
 			gracz1.append(card_node.card_id)
 			ustaw_karty()
-		else:
+		else: #stos ma kartę na sobie
 			var kopia_up = up.duplicate()
 			for i in kopia_up:
 				gracz1.erase(i)
@@ -135,11 +140,14 @@ func left_card_was_clicked(card_node: Node3D):
 func game_loop():
 	show_message("Zaczyna gracz posiadający kartę 9 serce!")
 	if 33 in gracz1:
-		show_message("Kolej przeciwnika")
-	else:
+		show_message("Kolej przeciwnika",10)
+		TWOJA_KOLEJ = 1
+	elif 33 in gracz2:
 		show_message("Twoja kolej!",10)
+		TWOJA_KOLEJ = 0
 	place_this_on_stack(33)
 	
+
 
 func place_this_on_stack(x):
 	if x in gracz1:
