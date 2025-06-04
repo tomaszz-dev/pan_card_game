@@ -35,6 +35,7 @@ func _ready():
 		przesuniecie_z = przesuniecie_z+5
 		przesuniecie_y = przesuniecie_y+0.01
 		await get_tree().create_timer(0.01).timeout
+	game_loop()
 	
 func ustaw_karty():
 	for child in get_children():
@@ -64,7 +65,7 @@ func ustaw_karty():
 	for i in stos:
 		karta(przesuniecie_x,przesuniecie_y,przesuniecie_z,i,0)
 		przesuniecie_y = przesuniecie_y+0.1
-
+	
 
 func losowanie():
 	for i in range(0,52):
@@ -112,25 +113,41 @@ func left_card_was_clicked(card_node: Node3D):
 			pos.y -= 2  # opuść
 			card_node.is_selected = false
 			up.erase(card_node.card_id)
+	elif card_node.card_id in stos and card_node.card_id == stos[len(stos)-1]:
+		if up.is_empty():
+			stos.erase(card_node.card_id)
+			gracz1.append(card_node.card_id)
+			ustaw_karty()
+		else:
+			var kopia_up = up.duplicate()
+			for i in kopia_up:
+				gracz1.erase(i)
+				stos.append(i)
+			up.clear()
+			ustaw_karty()
+
 	print(card_node.card_id)
 	card_node.global_transform.origin = pos
 	print(up)
 
 
 
+func game_loop():
+	place_this_on_stack(4)
+	show_message("Karta została zagrana!")
 
-func _input(event):
-	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
-			print("Kliknięto prawy przycisk myszy!")
-			right_click()
+func place_this_on_stack(x):
+	gracz1.erase(x)
+	stos.append(x)
+	ustaw_karty()
 
-func right_click():
-	for i in up:
-		gracz1.erase(i)
-		stos.append(i)
-		ustaw_karty()
-		up.erase(i)
+func show_message(text: String, duration: float = 2.0):
+	var label = $CanvasLayer/Label
+	label.text = text
+	label.visible = true
+	await get_tree().create_timer(duration).timeout
+	label.visible = false
+
 		
 func usun_karty_gracza1():
 	for child in get_children():
