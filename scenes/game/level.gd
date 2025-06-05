@@ -284,3 +284,8 @@ func usun_karty_gracza1():
 		if child.has_variable("card_id") and child.card_id in gracz1:
 			remove_child(child)
 			child.queue_free()
+
+func _unhandled_input(event):
+	if event.is_action_pressed("ui_cancel"):  # domyślnie ESC
+		print("Wciśnięto ESC")
+		get_tree().quit()

@@ -1,10 +1,12 @@
-[gd_scene load_steps=14 format=3 uid="uid://cnild1gn8bgwl"]
+[gd_scene load_steps=16 format=3 uid="uid://cnild1gn8bgwl"]
 
 [ext_resource type="Texture2D" uid="uid://bibba24jobfsf" path="res://assets/textures/cards/2.png" id="1_gfgjs"]
 [ext_resource type="Texture2D" uid="uid://o2cowsh5oqqv" path="res://assets/textures/cards/card_back.png" id="2_bqqt6"]
 [ext_resource type="Script" uid="uid://cy35m0hxm00wo" path="res://scripts/karta_w_menu.gd" id="2_wu84c"]
 [ext_resource type="Script" uid="uid://cy2ktbxhsc8sk" path="res://scripts/menu.gd" id="4_wu84c"]
 [ext_resource type="Texture2D" uid="uid://bt15qtbncl53k" path="res://assets/textures/logo.png" id="5_8ln24"]
+[ext_resource type="AudioStream" uid="uid://b61yhv5sltf7u" path="res://assets/sounds/ambience_jail.wav" id="6_fpthd"]
+[ext_resource type="Script" uid="uid://cmvmvwgceqhht" path="res://scenes/game/audio_stream_player.gd" id="7_bto60"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_vue75"]
 
@@ -96,6 +98,12 @@ text = "wyjdz"
 [node name="Logo" type="Sprite2D" parent="VBoxContainer"]
 position = Vector2(105, -100)
 texture = ExtResource("5_8ln24")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="VBoxContainer"]
+stream = ExtResource("6_fpthd")
+volume_db = -30.478
+autoplay = true
+script = ExtResource("7_bto60")
 
 [connection signal="pressed" from="VBoxContainer/NewGameButton" to="VBoxContainer" method="_on_new_game_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/LeaveGameButton" to="VBoxContainer" method="_on_leave_game_button_pressed"]
