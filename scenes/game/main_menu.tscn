@@ -1,6 +1,6 @@
 [gd_scene load_steps=14 format=3 uid="uid://cnild1gn8bgwl"]
 
-[ext_resource type="Texture2D" uid="uid://i5scu34k5xab" path="res://assets/textures/cards/card_hearts_09.png" id="1_ekxnf"]
+[ext_resource type="Texture2D" uid="uid://de3jseewcik8s" path="res://assets/textures/cards/2.png" id="1_gfgjs"]
 [ext_resource type="Texture2D" uid="uid://cfqjct313qv2j" path="res://assets/textures/cards/card_back.png" id="2_bqqt6"]
 [ext_resource type="Script" uid="uid://cy35m0hxm00wo" path="res://scripts/karta_w_menu.gd" id="2_wu84c"]
 [ext_resource type="Script" uid="uid://cy2ktbxhsc8sk" path="res://scripts/menu.gd" id="4_wu84c"]
@@ -9,7 +9,7 @@
 [sub_resource type="BoxMesh" id="BoxMesh_vue75"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wu84c"]
-albedo_texture = ExtResource("1_ekxnf")
+albedo_texture = ExtResource("1_gfgjs")
 uv1_scale = Vector3(0.625, 0.905, 1)
 uv1_offset = Vector3(0.19, 0.05, 0)
 texture_filter = 0
