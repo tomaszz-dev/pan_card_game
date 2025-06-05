@@ -2,7 +2,11 @@ extends Node3D
 
 # Ładujemy prefab (PackedScene) karty
 var CardScene := preload("res://scenes/objects/card.tscn")
-var sound = preload("res://assets/sounds/card_rozdanie.wav")
+var rozdanie = preload("res://assets/sounds/card_rozdanie.wav")
+var error = preload("res://assets/sounds/error.wav")
+var card_up = preload("res://assets/sounds/card_up.wav")
+var card_stack = preload("res://assets/sounds/card_stack.wav")
+var stack_up = preload("res://assets/sounds/stack_up.wav")
 var player = AudioStreamPlayer.new()
 var lista = []
 var gracz1 = []
@@ -19,7 +23,7 @@ var gra_skonczona
 	
 func _ready():
 	losowanie()
-	dzwiek()
+	dzwiek(rozdanie)
 	przesuniecie_x = -30
 	przesuniecie_z = -50
 	przesuniecie_y = 82.3
@@ -41,37 +45,52 @@ func _ready():
 	
 func ustaw_karty():
 	for child in get_children():
-		if child is Node3D and child.has_method("set_card"):  # zakładamy że tylko karty mają set_card()
+		if child is Node3D and child.has_method("set_card"):
 			remove_child(child)
 			child.queue_free()
-	
-	przesuniecie_x = -30
-	przesuniecie_z = -50
-	przesuniecie_y = 82.3
-	var zmiana = 10
-	
-	
+
+	var max_z_range = 100.0  # czyli od -50 do 50
+	var max_step = 10.0
+	var min_z = -50.0
+
+	# Gracz 1
+	var ilosc_kart = gracz1.size()
+	var step_z = max_z_range / max(ilosc_kart - 1, 1)
+	step_z = min(step_z, max_step)
+	var total_range = step_z * (ilosc_kart - 1)
+	var start_z = -total_range / 2.0
+
+	var przesuniecie_x = -30
+	var przesuniecie_y = 82.3
 	for i in gracz1:
-		karta(przesuniecie_x,przesuniecie_y,przesuniecie_z,i,0)
-		przesuniecie_z = przesuniecie_z+zmiana
-		przesuniecie_y = przesuniecie_y+0.01
-	#gracz2
+		var index = gracz1.find(i)
+		var przesuniecie_z = start_z + index * step_z
+		karta(przesuniecie_x, przesuniecie_y, przesuniecie_z, i, 0)
+		przesuniecie_y += 0.01
+
+	# Gracz 2
+	ilosc_kart = gracz2.size()
+	step_z = max_z_range / max(ilosc_kart - 1, 1)
+	step_z = min(step_z, max_step)
+	total_range = step_z * (ilosc_kart - 1)
+	start_z = -total_range / 2.0
+
 	przesuniecie_x = 40
-	przesuniecie_z = -50
-	przesuniecie_y = 83
+	przesuniecie_y = 83.0
 	for i in gracz2:
-		karta(przesuniecie_x,przesuniecie_y,przesuniecie_z,i,180)
-		przesuniecie_z = przesuniecie_z+zmiana
-		przesuniecie_y = przesuniecie_y+0.01
-	#stos
+		var index = gracz2.find(i)
+		var przesuniecie_z = start_z + index * step_z
+		karta(przesuniecie_x, przesuniecie_y, przesuniecie_z, i, 180)
+		przesuniecie_y += 0.01
+
+	# Stos
 	przesuniecie_x = 2.0
 	przesuniecie_y = 82.4
 	przesuniecie_z = 3.0
-	
 	for i in stos:
-		karta(przesuniecie_x,przesuniecie_y,przesuniecie_z,i,0)
-		przesuniecie_y = przesuniecie_y+0.1
-	
+		karta(przesuniecie_x, przesuniecie_y, przesuniecie_z, i, 0)
+		przesuniecie_y += 0.1
+
 
 func losowanie():
 	lista.clear()
@@ -107,10 +126,11 @@ func karta(x,y,z,card_id,rotacja):
 func ID_na_moc(x: int) -> int:
 	return int(x / 4) + 1
 	
-func dzwiek():
+func dzwiek(x):
 	add_child(player)
-	player.stream = sound
+	player.stream = x
 	player.play()
+
 
 func left_card_was_clicked(card_node: Node3D):
 	if TWOJA_KOLEJ != 1:
@@ -123,8 +143,10 @@ func left_card_was_clicked(card_node: Node3D):
 				pos.y += 2
 				card_node.is_selected = true
 				up.append(card_node.card_id)
+				dzwiek(card_up)
 			elif up:
-				pass
+				dzwiek(error)
+				
 				# Zaznacz kartę
 				
 		else:
@@ -132,21 +154,26 @@ func left_card_was_clicked(card_node: Node3D):
 			pos.y -= 2
 			card_node.is_selected = false
 			up.erase(card_node.card_id)
-
+			dzwiek(card_up)
 		card_node.global_transform.origin = pos
 	
 	# Kliknięto kartę ze stosu (tylko górną)
 	elif card_node.card_id in stos and stos.back() == card_node.card_id:
 		if up.is_empty() and len(stos) > 1:
 			# Podnieś górną kartę ze stosu do ręki
-			stos.erase(card_node.card_id)
-			gracz1.append(card_node.card_id)
+			for i in range(3):
+				if len(stos) == 1:
+					pass
+				else:
+					gracz1.append(stos.back())
+					stos.pop_back()
 			ustaw_karty()
+			dzwiek(card_stack)
 			TWOJA_KOLEJ = 0
 			kolej()
 		else:
 			# Zagraj wybrane karty na stos
-			if len(up) == 1 or len(up) == 4 or up == [2,2,2]: #tylko 1 albo 4 karty albo 3 dziewiatki serce
+			if len(up) == 1 or len(up) == 4 or zawiera_trzy_dziewiatki(up):#tylko 1 albo 4 karty albo 3 dziewiatki 
 				if ID_na_moc(stos[len(stos)-1]) <= ID_na_moc(up[0]):
 					for card_id in up:
 						gracz1.erase(card_id)
@@ -155,11 +182,23 @@ func left_card_was_clicked(card_node: Node3D):
 					ustaw_karty()
 					TWOJA_KOLEJ = 0
 					kolej()
-
+					dzwiek(stack_up)
+				else:
+					dzwiek(error)
+			else:
+				dzwiek(error)
+	else:
+		dzwiek(error)
 	print("Kliknięto kartę:", card_node.card_id)
 	print("Wybrane karty:", up)
 
-
+func zawiera_trzy_dziewiatki(lista_kart):
+	if lista_kart.size() != 3:
+		return false
+	for id in lista_kart:
+		if ID_na_moc(id) != 1:
+			return false
+	return true
 
 func game_loop():
 	show_message("Zaczyna gracz posiadający kartę 9 serce!")
@@ -190,17 +229,23 @@ func kolej():
 				place_this_on_stack(x)
 				TWOJA_KOLEJ = 1
 				zagrano = true
+				dzwiek(stack_up)
 				break
-
 		if not zagrano:
 			# Przeciwnik musi dobrać kartę, ale tylko jeśli stos ma więcej niż jedną kartę
 			if stos.size() > 1:
-				stos.pop_back()
-				gracz2.append(ostatni)
+				for i in range(3):
+					if len(stos) == 1:
+						pass
+					else:
+						gracz2.append(stos.back())
+						stos.pop_back()
 				TWOJA_KOLEJ = 1
+				dzwiek(card_stack)
 			else:
 				show_message("WYGRAŁEŚ!")  # Przeciwnik nie ma ruchu i nie może dobrać — przegrywa
 				return
+		
 		ustaw_karty()
 		kolej()
 
