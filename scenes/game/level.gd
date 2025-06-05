@@ -15,26 +15,26 @@ var stos = []
 var stos_y = 82.4
 var up = []
 var TWOJA_KOLEJ = 1
-
+var gra_skonczona
 	
 func _ready():
 	losowanie()
 	dzwiek()
 	przesuniecie_x = -30
-	przesuniecie_z = -60
+	przesuniecie_z = -50
 	przesuniecie_y = 82.3
 	for i in gracz1:
 		karta(przesuniecie_x,przesuniecie_y,przesuniecie_z,i,0)
-		przesuniecie_z = przesuniecie_z+5
+		przesuniecie_z = przesuniecie_z+10
 		przesuniecie_y = przesuniecie_y+0.01
 		await get_tree().create_timer(0.01).timeout
 	#gracz2
 	przesuniecie_x = 40
-	przesuniecie_z = -60
+	przesuniecie_z = -50
 	przesuniecie_y = 83
 	for i in gracz2:
 		karta(przesuniecie_x,przesuniecie_y,przesuniecie_z,i,180)
-		przesuniecie_z = przesuniecie_z+5
+		przesuniecie_z = przesuniecie_z+10
 		przesuniecie_y = przesuniecie_y+0.01
 		await get_tree().create_timer(0.01).timeout
 	game_loop()
@@ -44,26 +44,30 @@ func ustaw_karty():
 		if child is Node3D and child.has_method("set_card"):  # zakładamy że tylko karty mają set_card()
 			remove_child(child)
 			child.queue_free()
-
+	
 	przesuniecie_x = -30
-	przesuniecie_z = -60
+	przesuniecie_z = -50
 	przesuniecie_y = 82.3
+	var zmiana = 10
+	
+	
 	for i in gracz1:
 		karta(przesuniecie_x,przesuniecie_y,przesuniecie_z,i,0)
-		przesuniecie_z = przesuniecie_z+5
+		przesuniecie_z = przesuniecie_z+zmiana
 		przesuniecie_y = przesuniecie_y+0.01
 	#gracz2
 	przesuniecie_x = 40
-	przesuniecie_z = -60
+	przesuniecie_z = -50
 	przesuniecie_y = 83
 	for i in gracz2:
 		karta(przesuniecie_x,przesuniecie_y,przesuniecie_z,i,180)
-		przesuniecie_z = przesuniecie_z+5
+		przesuniecie_z = przesuniecie_z+zmiana
 		przesuniecie_y = przesuniecie_y+0.01
 	#stos
 	przesuniecie_x = 2.0
-	przesuniecie_z = 3.0
 	przesuniecie_y = 82.4
+	przesuniecie_z = 3.0
+	
 	for i in stos:
 		karta(przesuniecie_x,przesuniecie_y,przesuniecie_z,i,0)
 		przesuniecie_y = przesuniecie_y+0.1
@@ -74,7 +78,7 @@ func losowanie():
 	gracz1.clear()
 	gracz2.clear()
 
-	for i in range(52):
+	for i in range(24):
 		lista.append(i)
 	lista.shuffle()
 	
@@ -142,7 +146,7 @@ func left_card_was_clicked(card_node: Node3D):
 			kolej()
 		else:
 			# Zagraj wybrane karty na stos
-			if len(up) == 1 or len(up) == 4 or up == [33,33,33]: #tylko 1 albo 4 karty albo 3 dziewiatki serce
+			if len(up) == 1 or len(up) == 4 or up == [2,2,2]: #tylko 1 albo 4 karty albo 3 dziewiatki serce
 				if ID_na_moc(stos[len(stos)-1]) <= ID_na_moc(up[0]):
 					for card_id in up:
 						gracz1.erase(card_id)
@@ -159,19 +163,21 @@ func left_card_was_clicked(card_node: Node3D):
 
 func game_loop():
 	show_message("Zaczyna gracz posiadający kartę 9 serce!")
-	if 33 in gracz1:
+	if 2 in gracz1:
 		show_message("Kolej przeciwnika")
 		TWOJA_KOLEJ = 0
-	elif 33 in gracz2:
+	elif 2 in gracz2:
 		show_message("Twoja kolej!",)
 		TWOJA_KOLEJ = 1
 		kolej()
-	place_this_on_stack(30)
+	place_this_on_stack(2)
 	await get_tree().create_timer(1).timeout
 	kolej()
 	
 
 func kolej():
+	if gra_skonczona:
+		return
 	if TWOJA_KOLEJ == 1:
 		show_message("Twoja kolej!")
 	else:
@@ -187,16 +193,27 @@ func kolej():
 				break
 
 		if not zagrano:
-			# Przeciwnik musi dobrać kartę ze stosu
-			stos.pop_back()
-			gracz2.append(ostatni)
-			TWOJA_KOLEJ = 1
+			# Przeciwnik musi dobrać kartę, ale tylko jeśli stos ma więcej niż jedną kartę
+			if stos.size() > 1:
+				stos.pop_back()
+				gracz2.append(ostatni)
+				TWOJA_KOLEJ = 1
+			else:
+				show_message("WYGRAŁEŚ!")  # Przeciwnik nie ma ruchu i nie może dobrać — przegrywa
+				return
 		ustaw_karty()
 		kolej()
+
 	if gracz1.is_empty():
 		show_message("WYGRAŁEŚ!")
+		gra_skonczona = true
+		return
 	if gracz2.is_empty():
 		show_message("PRZEGRAŁEŚ!")
+		gra_skonczona = true
+		return
+		
+
 
 func place_this_on_stack(x):
 	if x in gracz1:

@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://dstiijyn8bb30"]
 
 [ext_resource type="Script" uid="uid://c6moex0n82joh" path="res://scenes/objects/card.gd" id="1_lgcrw"]
-[ext_resource type="Texture2D" uid="uid://cfqjct313qv2j" path="res://assets/textures/cards/card_back.png" id="3_foa3m"]
+[ext_resource type="Texture2D" uid="uid://o2cowsh5oqqv" path="res://assets/textures/cards/card_back.png" id="3_foa3m"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_yjkdi"]
 
