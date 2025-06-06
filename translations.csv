@@ -4,5 +4,7 @@ EXIT_BUTTON,Exit,Wyjdź
 NINE_HEARTS,The player holding the Nine of Hearts starts the game!, Gracz posiadający kartę 9 serce rozpoczyna grę!
 OPPONENTS_TURN,Opponent's Turn.,kolej przeciwnika.
 YOUR_TURN,Your turn!,Twoja kolej!
-WIN,You won!,wygrałeś!
-LOSS,You lost.,Przegrałeś.
+WIN_ROUND,You won round!,wygrałeś rundę!
+LOSS_ROUND,You lost round.,Przegrałeś przegrałeś.
+WIN_GAME,You won game!,wygrałeś grę!
+LOSS_GAME,You lost game.,Przegrałeś grę.

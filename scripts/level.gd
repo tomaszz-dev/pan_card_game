@@ -22,7 +22,9 @@ var up = []
 var TWOJA_KOLEJ = 1
 var gra_skonczona
 var lang = 0
-
+var pan = ['P', 'A', 'N']
+var gracz1pan = []
+var gracz2pan = []
 	
 func _ready():
 	TWOJA_KOLEJ = 0
@@ -286,7 +288,7 @@ func kolej():
 				TWOJA_KOLEJ = 1
 				dzwiek(card_stack)
 			else:
-				show_message("WYGRAŁEŚ!")  # Przeciwnik nie ma ruchu i nie może dobrać — przegrywa
+				show_message("WIN_ROUND")  # Przeciwnik nie ma ruchu i nie może dobrać — przegrywa
 				gra_skonczona = true
 				$VBoxContainer.visible = true
 				return
@@ -295,12 +297,20 @@ func kolej():
 		kolej()
 
 	if gracz1.is_empty():
-		show_message("WYGRAŁEŚ!")
+		show_message("WIN_ROUND")
+		
+		gracz2pan.append(pan.back())
+		pan.pop_back()
+		
 		gra_skonczona = true
 		$VBoxContainer.visible = true
 		return
 	if gracz2.is_empty():
-		show_message("PRZEGRAŁEŚ!")
+		show_message("LOSS_ROUND")
+		
+		gracz1pan.append(pan.back())
+		pan.pop_back()
+		
 		gra_skonczona = true
 		$VBoxContainer.visible = true
 		return
