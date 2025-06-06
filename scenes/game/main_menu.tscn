@@ -6,7 +6,6 @@
 [ext_resource type="Script" uid="uid://cy2ktbxhsc8sk" path="res://scripts/menu.gd" id="4_wu84c"]
 [ext_resource type="Texture2D" uid="uid://bt15qtbncl53k" path="res://assets/textures/logo.png" id="5_8ln24"]
 [ext_resource type="AudioStream" uid="uid://b61yhv5sltf7u" path="res://assets/sounds/ambience_jail.wav" id="6_fpthd"]
-[ext_resource type="Script" uid="uid://cmvmvwgceqhht" path="res://scenes/game/audio_stream_player.gd" id="7_bto60"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_vue75"]
 
@@ -36,6 +35,10 @@ ambient_light_color = Color(0.502817, 0.663302, 1, 1)
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_bqqt6"]
 
 [sub_resource type="Compositor" id="Compositor_wu84c"]
+
+[sub_resource type="GDScript" id="GDScript_fpthd"]
+script/source = "extends AudioStreamPlayer
+"
 
 [node name="main_menu" type="Node3D"]
 
@@ -103,7 +106,7 @@ texture = ExtResource("5_8ln24")
 stream = ExtResource("6_fpthd")
 volume_db = -30.478
 autoplay = true
-script = ExtResource("7_bto60")
+script = SubResource("GDScript_fpthd")
 
 [connection signal="pressed" from="VBoxContainer/NewGameButton" to="VBoxContainer" method="_on_new_game_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/LeaveGameButton" to="VBoxContainer" method="_on_leave_game_button_pressed"]
