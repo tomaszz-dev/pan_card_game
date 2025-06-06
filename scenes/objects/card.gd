@@ -27,6 +27,8 @@ var card_textures = [
 	"res://assets/textures/cards/23.png",
 ]
 
+
+
 var card_id: int = -1
 var is_selected: bool = false
 

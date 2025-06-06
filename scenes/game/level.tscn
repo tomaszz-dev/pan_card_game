@@ -41,8 +41,6 @@ spot_angle = 58.71
 [node name="stos" parent="." instance=ExtResource("2_dtmi3")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2, 82.4, -1.03113)
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Label" type="Label" parent="CanvasLayer"]
@@ -73,13 +71,15 @@ script = ExtResource("4_rhpan")
 [node name="PlayAgainButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 60
-text = "zegrej jeszcze"
+text = "Play again"
 
 [node name="LeaveGameButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 theme_override_constants/outline_size = 5
 theme_override_font_sizes/font_size = 60
-text = "wyjdz"
+text = "Exit"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="VBoxContainer"]
 
 [connection signal="pressed" from="VBoxContainer/PlayAgainButton" to="." method="_on_play_again_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/LeaveGameButton" to="." method="_on_leave_game_button_pressed"]

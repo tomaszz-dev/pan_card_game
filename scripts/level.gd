@@ -8,7 +8,7 @@ var error = preload("res://assets/sounds/error.wav")
 var card_up = preload("res://assets/sounds/card_up.wav")
 var card_stack = preload("res://assets/sounds/card_stack.wav")
 var stack_up = preload("res://assets/sounds/stack_up.wav")
-var player = AudioStreamPlayer.new()
+@onready var player = $VBoxContainer/AudioStreamPlayer
 var lista = []
 var gracz1 = []
 var gracz2 = []
@@ -21,8 +21,11 @@ var stos_y = 82.4
 var up = []
 var TWOJA_KOLEJ = 1
 var gra_skonczona
+var lang = 0
+
 	
 func _ready():
+	TWOJA_KOLEJ = 0
 	stos.clear()
 	losowanie()
 	dzwiek(rozdanie)
@@ -150,7 +153,7 @@ func karta(x,y,z,card_id,rotacja):
 	var card = CardScene.instantiate()
 	# Ustawiamy jej pozycję w świecie (opcjonalnie)
 	card.transform.origin = Vector3(x, y, z)
-	card.rotation = Vector3(0, deg_to_rad(90), deg_to_rad(rotacja))
+	card.rotation = Vector3(0, deg_to_rad(270), deg_to_rad(rotacja))
 	# Dodajemy do sceny
 	add_child(card)
 	# Ustawiamy jej wartość (np. 9 kier)
@@ -162,7 +165,6 @@ func ID_na_moc(x: int) -> int:
 	return int(x / 4) + 1
 	
 func dzwiek(x):
-	add_child(player)
 	player.stream = x
 	player.play()
 
@@ -236,17 +238,19 @@ func zawiera_trzy_dziewiatki(lista_kart):
 	return true
 
 func game_loop():
-	show_message("Zaczyna gracz posiadający kartę 9 serce!")
+	show_message("NINE_HEARTS")
 	if 2 in gracz1:
 		await get_tree().create_timer(1).timeout
 		place_this_on_stack(2)
-		show_message("Kolej przeciwnika")
+		show_message("OPPONENTS_TURN")
 		TWOJA_KOLEJ = 0
 	elif 2 in gracz2:
 		await get_tree().create_timer(1).timeout
 		place_this_on_stack(2)
-		show_message("Twoja kolej!",)
+		show_message("YOUR_TURN",)
 		TWOJA_KOLEJ = 1
+		up.clear()
+	ustaw_karty()
 	kolej()
 	
 
@@ -254,9 +258,9 @@ func kolej():
 	if gra_skonczona:
 		return
 	if TWOJA_KOLEJ == 1:
-		show_message("Twoja kolej!")
+		show_message("YOUR_TURN")
 	else:
-		show_message("Kolej przeciwnika.")
+		show_message("OPPONENTS_TURN")
 		await get_tree().create_timer(1).timeout
 		var ostatni = stos.back()
 		var zagrano = false
