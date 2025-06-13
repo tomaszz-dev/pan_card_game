@@ -1,10 +1,14 @@
-[gd_scene load_steps=14 format=3 uid="uid://cnild1gn8bgwl"]
+[gd_scene load_steps=19 format=3 uid="uid://cnild1gn8bgwl"]
 
-[ext_resource type="Texture2D" uid="uid://de3jseewcik8s" path="res://assets/textures/cards/2.png" id="1_gfgjs"]
-[ext_resource type="Texture2D" uid="uid://cfqjct313qv2j" path="res://assets/textures/cards/card_back.png" id="2_bqqt6"]
+[ext_resource type="Texture2D" uid="uid://bibba24jobfsf" path="res://assets/textures/cards/2.png" id="1_gfgjs"]
+[ext_resource type="Texture2D" uid="uid://o2cowsh5oqqv" path="res://assets/textures/cards/card_back.png" id="2_bqqt6"]
 [ext_resource type="Script" uid="uid://cy35m0hxm00wo" path="res://scripts/karta_w_menu.gd" id="2_wu84c"]
 [ext_resource type="Script" uid="uid://cy2ktbxhsc8sk" path="res://scripts/menu.gd" id="4_wu84c"]
 [ext_resource type="Texture2D" uid="uid://bt15qtbncl53k" path="res://assets/textures/logo.png" id="5_8ln24"]
+[ext_resource type="AudioStream" uid="uid://b61yhv5sltf7u" path="res://assets/sounds/ambience_jail.wav" id="6_fpthd"]
+[ext_resource type="Script" uid="uid://c110vg0vno3mu" path="res://scenes/game/languages.gd" id="7_6hh85"]
+[ext_resource type="Texture2D" uid="uid://ci4514mwr1q3u" path="res://assets/textures/flags/polska.png" id="7_16onh"]
+[ext_resource type="Texture2D" uid="uid://cwk2vm2awnip" path="res://assets/textures/flags/uk.png" id="8_6hh85"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_vue75"]
 
@@ -35,6 +39,10 @@ ambient_light_color = Color(0.502817, 0.663302, 1, 1)
 
 [sub_resource type="Compositor" id="Compositor_wu84c"]
 
+[sub_resource type="GDScript" id="GDScript_fpthd"]
+script/source = "extends AudioStreamPlayer
+"
+
 [node name="main_menu" type="Node3D"]
 
 [node name="background" type="Node3D" parent="."]
@@ -44,7 +52,7 @@ transform = Transform3D(100, 0, 0, 0, 1, 0, 0, 0, 100, 0, 0, 0)
 mesh = SubResource("BoxMesh_vue75")
 
 [node name="karta_glowna" type="MeshInstance3D" parent="background"]
-transform = Transform3D(-3.99246, 0.0605571, -0.0593457, -0.042436, -0.0115466, 5.99927, 0.241745, 0.998097, 0.0730035, 0.146299, 7.58244, 0)
+transform = Transform3D(-3.93923, -0.173648, 1.68583e-07, 8.74227e-08, 3.78551e-08, 6.00001, -0.694592, 0.984807, -2.00909e-07, 0.146299, 7.58244, 0)
 material_override = SubResource("StandardMaterial3D_wu84c")
 mesh = SubResource("PlaneMesh_8ln24")
 script = ExtResource("2_wu84c")
@@ -74,8 +82,8 @@ spot_angle = 22.04
 anchors_preset = -1
 anchor_left = 0.0147569
 anchor_top = 0.322531
-anchor_right = 0.304687
-anchor_bottom = 0.609568
+anchor_right = 0.38368
+anchor_bottom = 0.692901
 offset_bottom = 3.05176e-05
 size_flags_vertical = 8
 script = ExtResource("4_wu84c")
@@ -85,17 +93,61 @@ metadata/_edit_use_anchors_ = true
 layout_mode = 2
 theme_override_constants/outline_size = 5
 theme_override_font_sizes/font_size = 60
-text = "nowe gre"
+text = "PLAY_BUTTON"
 
 [node name="LeaveGameButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 theme_override_constants/outline_size = 5
 theme_override_font_sizes/font_size = 60
-text = "wyjdz"
+text = "EXIT_BUTTON"
 
 [node name="Logo" type="Sprite2D" parent="VBoxContainer"]
 position = Vector2(105, -100)
 texture = ExtResource("5_8ln24")
 
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="VBoxContainer"]
+stream = ExtResource("6_fpthd")
+volume_db = -18.478
+autoplay = true
+script = SubResource("GDScript_fpthd")
+
+[node name="languages" type="VBoxContainer" parent="."]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -120.0
+offset_right = 108.0
+grow_vertical = 0
+script = ExtResource("7_6hh85")
+
+[node name="Button" type="Button" parent="languages"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+icon = ExtResource("7_16onh")
+
+[node name="Button2" type="Button" parent="languages"]
+layout_mode = 2
+size_flags_horizontal = 0
+icon = ExtResource("8_6hh85")
+
+[node name="about" type="VBoxContainer" parent="."]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -154.0
+offset_top = -23.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="about"]
+layout_mode = 2
+text = "tomaszz-dev.itch.io"
+fit_content = true
+
 [connection signal="pressed" from="VBoxContainer/NewGameButton" to="VBoxContainer" method="_on_new_game_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/LeaveGameButton" to="VBoxContainer" method="_on_leave_game_button_pressed"]
+[connection signal="pressed" from="languages/Button" to="languages" method="_on_button_pressed"]
+[connection signal="pressed" from="languages/Button2" to="languages" method="_on_button_2_pressed"]

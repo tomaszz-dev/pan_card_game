@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://1kjecdw7o7ta"]
+[gd_scene load_steps=8 format=3 uid="uid://1kjecdw7o7ta"]
 
-[ext_resource type="Script" uid="uid://sibkjv78vte" path="res://scenes/game/level.gd" id="1_dtmi3"]
+[ext_resource type="Script" uid="uid://sibkjv78vte" path="res://scripts/level.gd" id="1_dtmi3"]
 [ext_resource type="PackedScene" uid="uid://dsvwg4y4er638" path="res://assets/models/table.glb" id="1_khnyk"]
 [ext_resource type="PackedScene" uid="uid://dstiijyn8bb30" path="res://scenes/objects/card.tscn" id="2_dtmi3"]
+[ext_resource type="Script" uid="uid://samno4iwf6lb" path="res://scenes/game/v_box_container.gd" id="4_rhpan"]
 
 [sub_resource type="Environment" id="Environment_2q6dc"]
 background_mode = 2
@@ -18,7 +19,7 @@ script = ExtResource("1_dtmi3")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.25078, 0, 0.280377)
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(-0.00123684, 0.503186, -0.864177, 0.000720175, 0.864178, 0.503186, 0.999999, 1.22236e-09, -0.00143123, -63.9533, 129.697, 2.6086)
+transform = Transform3D(-0.00123684, 0.503186, -0.864177, 0.000720175, 0.864178, 0.503186, 0.999999, 1.22236e-09, -0.00143123, -66.3169, 127.57, 2.6086)
 
 [node name="SpotLight3D" type="SpotLight3D" parent="."]
 transform = Transform3D(0.866095, -5.96101e-09, -0.499879, 0.499879, 1.03281e-08, 0.866095, 0, -1, 1.19249e-08, -58.6583, 184.118, 0)
@@ -40,8 +41,6 @@ spot_angle = 58.71
 [node name="stos" parent="." instance=ExtResource("2_dtmi3")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2, 82.4, -1.03113)
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Label" type="Label" parent="CanvasLayer"]
@@ -53,3 +52,34 @@ offset_right = 108.5
 offset_bottom = 55.0
 grow_horizontal = 2
 theme_override_font_sizes/font_size = 40
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+visible = false
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.501
+offset_left = -232.0
+offset_top = -45.0
+offset_right = 232.0
+offset_bottom = 45.352
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("4_rhpan")
+
+[node name="PlayAgainButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 60
+text = "Play again"
+
+[node name="LeaveGameButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 60
+text = "Exit"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="VBoxContainer"]
+
+[connection signal="pressed" from="VBoxContainer/PlayAgainButton" to="." method="_on_play_again_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/LeaveGameButton" to="." method="_on_leave_game_button_pressed"]
