@@ -290,13 +290,12 @@ func kolej():
 						gracz2.append(stos.back())
 						stos.pop_back()
 				TWOJA_KOLEJ = 1
+				zagrano=true
 				dzwiek(card_stack)
+				ustaw_karty()
+				return
 			else:
 				show_message("WIN_ROUND")  # Przeciwnik nie ma ruchu i nie może dobrać — przegrywa
-				
-				gracz2pan.append(pan2[0])
-				pan2.remove_at(0)
-				
 				gra_skonczona = true
 				$VBoxContainer.visible = true
 				return
