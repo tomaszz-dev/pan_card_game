@@ -21,14 +21,18 @@ var stos_y = 82.4
 var up = []
 var TWOJA_KOLEJ = 1
 var gra_skonczona
-var lang = 0
-var pan = ['P', 'A', 'N']
+var pan1 = ['P', 'A', 'N']
+var pan2 = ['P', 'A', 'N']
 var gracz1pan = []
 var gracz2pan = []
 	
 func _ready():
+
+	gra_skonczona=false
 	TWOJA_KOLEJ = 0
 	stos.clear()
+	gracz1.clear()
+	gracz2.clear()
 	losowanie()
 	dzwiek(rozdanie)
 	ustaw_karty_anim()
@@ -289,18 +293,18 @@ func kolej():
 				dzwiek(card_stack)
 			else:
 				show_message("WIN_ROUND")  # Przeciwnik nie ma ruchu i nie może dobrać — przegrywa
+				
+				gracz2pan.append(pan2[0])
+				pan2.remove_at(0)
+				
 				gra_skonczona = true
 				$VBoxContainer.visible = true
 				return
-		
-		ustaw_karty()
-		kolej()
-
 	if gracz1.is_empty():
 		show_message("WIN_ROUND")
 		
-		gracz2pan.append(pan.back())
-		pan.pop_back()
+		gracz2pan.append(pan2[0])
+		pan2.remove_at(0)
 		
 		gra_skonczona = true
 		$VBoxContainer.visible = true
@@ -308,8 +312,9 @@ func kolej():
 	if gracz2.is_empty():
 		show_message("LOSS_ROUND")
 		
-		gracz1pan.append(pan.back())
-		pan.pop_back()
+		gracz1pan.append(pan1[0])
+		pan1.remove_at(0)
+
 		
 		gra_skonczona = true
 		$VBoxContainer.visible = true

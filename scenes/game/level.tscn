@@ -81,5 +81,14 @@ text = "Exit"
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="VBoxContainer"]
 
+[node name="VBoxContainer2" type="VBoxContainer" parent="."]
+offset_right = 193.0
+offset_bottom = 47.0
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="VBoxContainer2"]
+layout_mode = 2
+text = "THIS"
+fit_content = true
+
 [connection signal="pressed" from="VBoxContainer/PlayAgainButton" to="." method="_on_play_again_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/LeaveGameButton" to="." method="_on_leave_game_button_pressed"]
